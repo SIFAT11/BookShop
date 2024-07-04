@@ -24,10 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-y3d^nt+#!%&z5nw3z^_m*=%hynvbkvjfkcbm(7uvvfo$s0$#u_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
+DEBUG = False
+ALLOWED_HOSTS = ['sifat11.pythonanywhere.com']
 
 # Application definition
 
@@ -86,25 +84,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-import dj_database_url
-import django_heroku
-import os
-
-# Configure database for Heroku
-DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
-}
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
-
-# Static files settings
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-
-# Activate Django-Heroku
-django_heroku.settings(locals())
 
 
 # Password validation
