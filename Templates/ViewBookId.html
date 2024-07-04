@@ -1,0 +1,215 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}User-Login{% endblock %}
+{% block point %}{% endblock %}
+{% block points %}{% endblock %}
+{% block content %}
+<body>
+    <div class="flex flex-row">
+        <div class="MainSectionForCards w-full">
+            <div class="p-12 flex">
+                <!-- Main section for viewing a book -->
+                <div class="block mx-4">
+                    <div class="w-full">
+                        <div class="mt-7 overflow-hidden flex bg-white rounded-lg shadow-md bg-clip-border flex-col md:flex-row">
+                            <div class="relative w-full flex justify-center items-center">
+                                <img src="{{ book.cover.url }}" alt="Book cover image"
+                                    class="object-cover w-full h-full md:rounded-t-lg md:rounded-l-lg md:rounded-t-none">
+                            </div>
+                            <div class="flex-auto p-6 w-full">
+                                <div class="flex flex-wrap">
+                                    <h1 class="flex-auto text-3xl font-semibold text-black">{{ book.title }}</h1>
+                                    <div class="text-xl font-semibold text-green-500" id="price">{{ book.price }} TK</div>
+                                    <div class="flex-none w-full mt-2 text-sm font-medium text-black">
+                                        By: {{ book.author }}</div>
+                                    <div class="mt-4 text-black">
+                                        <p>Posted By: {{ book.seller_profile }}</p>
+                                        <p>Address: {{ book.location }}</p>
+                                        <p>Condition: {{ book.condition }}</p>
+                                    </div>
+                                </div>
+                                <div class="items-baseline mt-4 mb-6 text-black">
+                                    <div>
+                                        <p>Number: {{ book.seller_profile.phone_number }}</p>
+                                    </div>
+                                    <div>
+                                        <p>Book Information: {{ book.description }}</p>
+                                        <p>Categories:</p>
+                                        <ul>
+                                            {% for category in book.categories.all %}
+                                            <li>{{ category.category_name }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p>Here You Can Show Quantity Price If You Need But Cart only One</p>
+                                <div class="flex items-center mt-4">
+                                    <button onclick="decrementQuantity('{{ book.id }}')"
+                                        class="bg-gray-200 text-gray-600 px-3 py-1 rounded-l-md">-</button>
+                                    <input type="text" id="quantity_{{ book.id }}" value="1"
+                                        class="w-16 text-center border border-gray-200" readonly>
+                                    <button onclick="incrementQuantity('{{ book.id }}')"
+                                        class="bg-gray-200 text-gray-600 px-3 py-1 rounded-r-md">+</button>
+                                </div>
+
+                                <div class="flex flex-col mb-4 text-sm font-medium text-black">
+                                    <p>Total Price: <span id="total_price">{{ book.price }} TK</span></p>
+                                    <a href="{% url 'add_to_cart' book_id=book.Book_ID %}" onclick="this.disabled=true;"
+                                        class="py-1 px-2 sm:py-2 sm:px-4 bg-green-600 transition-all duration-200 hover:bg-green-700 hover:scale-105 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-sm sm:text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">Add
+                                        to Cart</a>
+                                    <br><br>
+
+                                    {% if membership and membership.status == 'Accepted' %}
+                                    <div>
+                                        <a href="{% url 'book_request' book_id=book.Book_ID %}" onclick="this.disabled=true;"
+                                            class="py-2 px-4 bg-green-600 transition-all duration-200 hover:bg-green-700 hover:scale-105 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+                                            Rent_books</a>
+                                    </div>
+                                    {% else %}
+                                    <p>You need to have an active membership with an accepted status to request a book.</p>
+                                    <br>
+                                    <p><a href="{% url 'membership' %}"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Request
+                                            Membership</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function incrementQuantity(bookId) {
+        var quantityInput = document.getElementById("quantity_" + bookId);
+        var quantity = parseInt(quantityInput.value);
+        quantityInput.value = quantity + 1;
+        updateTotalPrice(bookId, quantity + 1);
+    }
+
+    function decrementQuantity(bookId) {
+        var quantityInput = document.getElementById("quantity_" + bookId);
+        var quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+            quantityInput.value = quantity - 1;
+            updateTotalPrice(bookId, quantity - 1);
+        }
+    }
+
+    function updateTotalPrice(bookId, quantity) {
+        var price = parseFloat("{{ book.price }}");
+        var totalPrice = price * quantity;
+        document.getElementById("total_price").innerText = totalPrice.toFixed(2) + " TK";
+    }
+</script>
+
+<style>
+    /* Custom styles for the book view page */
+
+    /* Main container */
+    .MainSectionForCards {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Global text color */
+    body, h1, h2, h3, h4, h5, h6, p, div, span, a, ul, li, input, button {
+        color: black !important;
+    }
+
+    /* Book card */
+    .book-card {
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    /* Book cover image */
+    .book-cover {
+        width: 100%;
+        height: auto;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    /* Book details */
+    .book-details {
+        padding: 1.5rem;
+    }
+
+    /* Book title */
+    .book-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Book price */
+    .book-price {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #4CAF50;
+        margin-bottom: 1rem;
+    }
+
+    /* Book author */
+    .book-author {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Book description */
+    .book-description {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Quantity controls */
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .quantity-btn {
+        background-color: #eee;
+        color: #333;
+        border: none;
+        padding: 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 0.25rem;
+    }
+
+    .quantity-input {
+        width: 3rem;
+        text-align: center;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        margin: 0 0.5rem;
+    }
+
+    /* Add to cart button */
+    .add-to-cart-btn {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 0.25rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+        background-color: #45A049;
+    }
+
+</style>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}CART{% endblock %}
+{% block point %}{% endblock %}
+{% block content %}
+
+<body class="bg-gray-100">
+  <div class="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32 mt-20">
+    <div class="px-4 pt-8">
+      <!-- Display all cart items -->
+      {% for cart_item in cart_items %}
+<div class="flex flex-col rounded-lg bg-white shadow-md mb-4">
+  <div class="flex items-center justify-between bg-gray-100 px-4 py-2">
+    <img class="m-2 h-24 w-28 rounded-md border object-cover object-center" src="{{ cart_item.book.cover.url }}"
+      alt="{{ cart_item.book.title }}" />
+    <div class="flex flex-col">
+      <span class="font-semibold text-gray-800">{{ cart_item.book.title }}</span>
+      <form method="post" action="{% url 'remove_from_cart' cart_item.id %}">
+        {% csrf_token %}
+        <button type="submit" class="text-red-500 hover:text-red-700 focus:outline-none">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="flex items-center justify-between px-4 py-2">
+    <div class="flex items-center">
+      <form method="post" action="{% url 'update_quantity' cart_item.id %}">
+        {% csrf_token %}
+        <button type="submit" name="quantity_change" value="-1"
+          class="bg-gray-200 text-gray-600 rounded-l-md px-2 py-1 text-sm focus:outline-none">-</button>
+      </form>
+      <input type="number" id="quantity_{{ cart_item.id }}" value="{{ cart_item.quantity }}"
+        class="w-12 text-center border border-gray-200" readonly>
+      <form method="post" action="{% url 'update_quantity' cart_item.id %}">
+        {% csrf_token %}
+        <button type="submit" name="quantity_change" value="1"
+          class="bg-gray-200 text-gray-600 rounded-r-md px-2 py-1 text-sm focus:outline-none">+</button>
+      </form>
+    </div>
+    <div>
+      <span class="font-semibold text-gray-800">${{ cart_item.subtotal }}</span>
+      <span class="text-gray-600">Remaining: {{ cart_item.book.quantity }}</span>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+      <!-- Shipping methods form -->
+      <div class="bg-white rounded-lg shadow-md p-4 mt-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Shipping Methods</h2>
+        <!-- Shipping methods options -->
+        <p class="text-gray-600">Choose your preferred shipping method.</p>
+      </div>
+    </div>
+
+    <div class="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
+      <!-- Payment details form -->
+      <div class="bg-white rounded-lg shadow-md p-4">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Payment Details</h2>
+        <p class="text-gray-600">Complete your order by providing your payment details.</p>
+        <!-- Payment form -->
+      </div>
+      <!-- Total -->
+      <div class="bg-white rounded-lg shadow-md p-4 mt-6">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-gray-800 font-semibold">Subtotal</span>
+          <span class="text-gray-800 font-semibold">{{ subtotal }}TK</span>
+        </div>
+
+      <a href="{% url 'checkout' %}">
+        <button class="mt-6 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white focus:outline-none hover:bg-gray-800">
+            Place Order
+        </button>
+    </a>    
+    </div>
+  </div>
+</body>
+
+{% endblock %}

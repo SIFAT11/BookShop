@@ -1,0 +1,40 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}Book Request Status{% endblock %}
+{% block point %}{% endblock %}
+{% block points %}{% endblock %}
+{% block content %}
+<body>
+    <h1 style="text-align: center; color: #333; margin-bottom: 20px;">Book Request Status</h1>
+    <table style="width: 100%; border-collapse: collapse; background-color: #fff; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+        <thead>
+            <tr style="background-color: #f2f2f2; font-weight: bold; color: #555; text-transform: uppercase;">
+                <th style="padding: 12px 15px; text-align: left;">User</th>
+                <th style="padding: 12px 15px; text-align: left;">Book Name</th>
+                <th style="padding: 12px 15px; text-align: left;">Image</th>
+                <th style="padding: 12px 15px; text-align: left;">Status</th>
+                <th style="padding: 12px 15px; text-align: left;">Seller Information</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for request in book_requests %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px 15px; text-align: left;">{{ request.full_name }}</td>
+                <td style="padding: 12px 15px; text-align: left;">{{ request.book.title }}</td>
+                <td style="padding: 12px 15px; text-align: left;"><img src="{{ request.book.cover.url }}" alt="{{ request.book.title }}" style="max-width: 80px; max-height: 80px; border-radius: 4px;"></td>
+                <td style="padding: 12px 15px; text-align: left;">{% if request.status == 'accepted' %}{{ request.status }}{% else %}<span style="font-style: italic; color: #999;">Waiting for acceptance</span>{% endif %}</td>
+                {% if request.status == 'accepted' %}
+                <td style="padding: 12px 15px; text-align: left;">
+                    <div>{{ request.seller_profile.Gmail }}</div>
+                    <div>{{ request.seller_profile.phone_number }}</div>
+                    <div>{{ request.seller_profile.address }}</div>
+                </td>
+                {% else %}
+                <td colspan="3" style="padding: 12px 15px; text-align: left;"><span style="font-style: italic; color: #999;">---</span></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'home.html' %}
+{% load static %}
+{% block title %}
+Booklist
+{% endblock %}
+{% block point %}{% endblock %}
+{% block points %}{% endblock %}
+{% block content %}
+<div class="grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-4 p-6 gap-4" id="bookGrid">
+  {% for book in books %}
+  <div
+    class="book-item relative flex flex-col text-gray-700 bg-white shadow-md bg-clip-border rounded-xl h-96 w-72 transition-all duration-300 hover:-translate-y-1">
+    <div class="relative mx-2 mt-2 overflow-hidden text-gray-700 bg-white bg-clip-border rounded-xl h-48">
+      <img src="{{ book.cover.url }}" alt="Book Cover" class="object-cover w-full h-full" />
+    </div>
+    <div class="p-4">
+      <div class="flex items-center justify-between mb-2">
+        <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+          {{ book.title }}</p>
+        <p class="block font-sans text-base antialiased font-medium leading-relaxed text-blue-gray-900">
+          {{ book.price }}TK</p>
+      </div>
+      <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
+        {{book.description }}</p>
+      <p class="block font-sans text-sm antialiased font-normal leading-normal text-gray-700 opacity-75">
+        Quantity: {{book.quantity }}</p>
+    </div>
+    <div class="p-4 pt-0">
+      <div class="p-4 pt-0">
+        {% if not request.user.seller_profile %}
+        <a href="{% url 'view_book' book_id=book.Book_ID %}"
+          class="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg shadow-gray-900/10 hover:shadow-gray-900/20 focus:opacity-[0.85] active:opacity-[0.85] active:shadow-none block w-full bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
+          type="button">View more</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
