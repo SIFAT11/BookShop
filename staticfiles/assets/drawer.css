@@ -1,0 +1,70 @@
+.block {
+    z-index: 1000;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #1a202c; /* Dark background color */
+    color: #fff; /* White text color */
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* Container Styles */
+.container {
+    max-width: 1140px; /* Maximum width for content */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Heading Styles */
+h5 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* Paragraph Styles */
+p {
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+/* Navigation Links Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+a {
+    text-decoration: none;
+    color: #d2d6dc; /* Light gray text color */
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #6b46c1; /* Purple text color on hover */
+}
+
+/* Social Icon Styles */
+.fa-facebook-f,
+.fa-twitter,
+.fa-linkedin-in,
+.fa-instagram {
+    font-size: 1.125rem;
+    color: #d2d6dc; /* Light gray icon color */
+    transition: color 0.3s ease;
+}
+
+.fa-facebook-f:hover,
+.fa-twitter:hover,
+.fa-linkedin-in:hover,
+.fa-instagram:hover {
+    color: #6b46c1; /* Purple icon color on hover */
+}
