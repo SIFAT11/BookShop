@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-y3d^nt+#!%&z5nw3z^_m*=%hynvbkvjfkcbm(7uvvfo$s0$#u_
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+ALLOWED_HOSTS = ['bookshop.onrender.com']
 
-ALLOWED_HOSTS = ['BookShop.up.railway.app']
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 
 # Application definition
@@ -126,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles/')
+    os.path.join(BASE_DIR, 'static')
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -137,11 +140,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WSGI_APPLICATION = 'BookShop.wsgi.application'
-
-import os
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BookShop.settings')
-
-application = get_wsgi_application()
